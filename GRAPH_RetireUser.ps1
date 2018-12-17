@@ -1,7 +1,7 @@
 ﻿cd C:\account\scripts
 
 #退職ユーザ名を入力
-$upn_names = @('admin@toguri0001gmail.onmicrosoft.com','katouh@toguri0001gmail.onmicrosoft.com')
+$upn_names = @('ユーザ名1','ユーザ名2')
 
 Function GetAccessToken
    {
