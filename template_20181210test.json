@@ -1,0 +1,1881 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "NumberName": {
+            "type": "String"
+        }
+    },
+    "variables": {
+      "virtualMachines_PreLis002_VM01_name": "[concat('PreLis', parameters('NumberName'), '-VM01')]",
+      "virtualMachines_PreLis002_VM02_name": "[concat('PreLis', parameters('NumberName'), '-VM02')]",
+      "virtualMachines_PreLis002_VM03_name": "[concat('PreLis', parameters('NumberName'), '-VM03')]",
+      "virtualMachines_PreLisWin10IMG_name": "PreLisWin10IMG",
+      "virtualMachines_PreLisWS2012IMG_name": "PreLisWS2012IMG",
+      "virtualNetworks_PreLis002_Vnet_name": "[concat('PreLis', parameters('NumberName'), '-Vnet')]",
+      "virtualNetworkGateways_PreLis002_GW_name": "[concat('PreLis', parameters('NumberName'), '-GW')]",
+      "virtualMachines_PreLis002_VM01_id": "/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/disks/PreLis002-VM01_OsDisk_1_a1eafb2c5287494ea3f03d5dc2ad1d33",
+      "virtualMachines_PreLis002_VM02_id": "/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/disks/PreLis002-VM02_OsDisk_1_0278b24adf724907ad1086827c65c701",
+      "virtualMachines_PreLis002_VM03_id": "/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/disks/PreLis002-VM03_OsDisk_1_ea1e1fb128d141f9820450f2010376b0",
+      "virtualMachines_PreLisWin10IMG_id": "/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/disks/PreLisWin10IMG_OsDisk_1_ce9f4eea0c5c4e4eb2901fd9a95e239a",
+      "virtualMachines_PreLisWS2012IMG_id": "/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/disks/PreLisWS2012IMG_OsDisk_1_35b7442f4e88485ab838c17dfc650053",
+      "networkInterfaces_PreLis002_vm01844_name": "[concat('PreLis', parameters('NumberName'), '-vm01')]",
+      "networkInterfaces_PreLis002_vm02466_name": "[concat('PreLis', parameters('NumberName'), '-vm02')]",
+      "networkInterfaces_PreLis002_vm03309_name": "[concat('PreLis', parameters('NumberName'), '-vm03')]",
+      "networkInterfaces_preliswin10img181_name": "[concat('PreLis', parameters('NumberName'), '-win10img')]",
+      "networkInterfaces_prelisws2012img816_name": "[concat('PreLis', parameters('NumberName'), '-ws2012img')]",
+      "storageAccounts_aandtprelislog_name": "aandtprelislog1",
+      "publicIPAddresses_PreLis002_VM01_PIP_name": "[concat('PreLis', parameters('NumberName'), '-VM01-PIP')]",
+      "publicIPAddresses_PreLis002_VM02_PIP_name": "[concat('PreLis', parameters('NumberName'), '-VM02-PIP')]",
+      "publicIPAddresses_PreLis002_VM03_PIP_name": "[concat('PreLis', parameters('NumberName'), '-VM03-PIP')]",
+      "publicIPAddresses_PreLis002_GWPIP_name": "[concat('PreLis', parameters('NumberName'), '-GWPIP')]",
+      "publicIPAddresses_PreLisWin10IMG_PIP_name": "[concat('PreLis', parameters('NumberName'), '-Win20IMG-GWPIP')]",
+      "publicIPAddresses_PreLisWS2012IMG_PIP_name": "[concat('PreLis', parameters('NumberName'), '-WS2012IMG')]",
+      "localNetworkGateways_PreLis002_LocalGW_name": "[concat('PreLis', parameters('NumberName'), '-LocalGW')]",
+      "networkSecurityGroups_PreLis002_VM01_nsg_name": "[concat('PreLis', parameters('NumberName'), '-VM01-nsg')]",
+      "networkSecurityGroups_PreLis002_VM02_nsg_name": "[concat('PreLis', parameters('NumberName'), '-VM02-nsg')]",
+      "networkSecurityGroups_PreLis002_VM03_nsg_name": "[concat('PreLis', parameters('NumberName'), '-VM03-nsg')]",
+      "networkSecurityGroups_PreLisWin10IMG_nsg_name": "[concat('PreLis', parameters('NumberName'), '-Win10IMG-nsg')]",
+      "networkSecurityGroups_PreLisWS2012IMG_nsg_name": "[concat('PreLis', parameters('NumberName'), '-WS2012IMG-nsg')]",
+      "subnets_GatewaySubnet_name": "GatewaySubnet",
+      "subnets_PreLis002_VMsubnet_name": "[concat('PreLis', parameters('NumberName'), '-VMsubnet')]",
+      "connections_PreLis002_VPN_location": "japaneast",
+      "connections_PreLis002_VPN_location_1": "japaneast",
+      "connections_PreLis002_VPN_name": "[concat('PreLis', parameters('NumberName'), '-VPN')]",
+      "extensions_IaaSDiagnostics_xmlCfg": "[concat('PreLis', parameters('NumberName'), '-xml')]",
+      "extensions_IaaSDiagnostics_xmlCfg_1": "[concat('PreLis', parameters('NumberName'), '-xml')]",
+      "extensions_IaaSDiagnostics_storageAccountName": "aandtprelislog1",
+      "extensions_IaaSDiagnostics_storageAccountName_1": "aandtprelislog1",
+      "extensions_IaaSDiagnostics_storageAccountKey": "jsjgvSnGklpPoVRxZXOT5TqivhtEvPMrldm6MCiG5RZCSjQgYDgZ92RDfWoQfe0E67wnWn/lqPS/dXafUrSfCg==",
+      "extensions_IaaSDiagnostics_storageAccountKey_1": "jsjgvSnGklpPoVRxZXOT5TqivhtEvPMrldm6MCiG5RZCSjQgYDgZ92RDfWoQfe0E67wnWn/lqPS/dXafUrSfCg===",
+      "extensions_IaaSDiagnostics_storageAccountEndPoint": "core.windows.net",
+      "extensions_IaaSDiagnostics_storageAccountEndPoint_1": "core.windows.net",
+      "securityRules_default_allow_rdp_name": "default-allow-rdp",
+      "securityRules_default_allow_rdp_name_1": "default-allow-rdp",
+      "securityRules_RDP_name": "RDP",
+      "securityRules_RDP_name_1": "RDP",
+      "securityRules_RDP_name_2": "RDP",
+      "extensions_IaaSAntimalware_name": "IaaSAntimalware",
+      "extensions_IaaSDiagnostics_name": "IaaSDiagnostics",
+      "extensions_IaaSAntimalware_name_1": "IaaSAntimalware",
+      "extensions_IaaSDiagnostics_name_1": "IaaSDiagnostics",
+      "extensions_IaaSAntimalware_name_2": "IaaSAntimalware",
+      "subnets_GatewaySubnet_name": "GatewaySubnet"
+      },
+    "resources": [
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM01' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[concat('PreLis', parameters('NumberName'), '-VM01')]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "microsoftvisualstudio",
+                        "offer": "Windows",
+                        "sku": "Windows-10-N-x64",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat('PreLis', parameters('NumberName'), '-VM01', '_OsDisk_1_a1eafb2c5287494ea3f03d5dc2ad1d33')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[concat('PreLis', parameters('NumberName'), '-VM01')]",
+                    "adminUsername": "wizmnt",
+                    "adminpassword": "zAq12wsxcde3",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm01844_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', variables('storageAccounts_aandtprelislog_name'), '.blob.core.windows.net', '/')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm01844_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM02' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('virtualMachines_PreLis002_VM02_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "microsoftvisualstudio",
+                        "offer": "Windows",
+                        "sku": "Windows-10-N-x64",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(variables('virtualMachines_PreLis002_VM02_name'),'_OsDisk_1_0278b24adf724907ad1086827c65c701')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachines_PreLis002_VM02_name')]",
+                    "adminUsername": "wizmnt",
+                    "adminpassword": "zAq12wsxcde3",                    
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm02466_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', variables('storageAccounts_aandtprelislog_name'), '.blob.core.windows.net', '/')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm02466_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM03' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('virtualMachines_PreLis002_VM03_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B2s"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2012-R2-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(variables('virtualMachines_PreLis002_VM03_name'),'_OsDisk_1_ea1e1fb128d141f9820450f2010376b0')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachines_PreLis002_VM03_name')]",
+                    "adminUsername": "wizmnt",
+                    "adminpassword": "zAq12wsxcde3",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm03309_name'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                        "storageUri": "[concat('https', '://', variables('storageAccounts_aandtprelislog_name'), '.blob.core.windows.net', '/')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_PreLis002_vm03309_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLisWin10IMG' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('virtualMachines_PreLisWin10IMG_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B4ms"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "microsoftvisualstudio",
+                        "offer": "Windows",
+                        "sku": "Windows-10-N-x64",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(variables('virtualMachines_PreLisWin10IMG_name'),'_OsDisk_1_ce9f4eea0c5c4e4eb2901fd9a95e239a')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachines_PreLisWin10IMG_name')]",
+                    "adminUsername": "wizmnt",
+                    "adminpassword": "zAq12wsxcde3",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_preliswin10img181_name'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_preliswin10img181_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLisWS2012IMG' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[variables('virtualMachines_PreLisWS2012IMG_name')]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_B4ms"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2012-R2-Datacenter",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(variables('virtualMachines_PreLisWS2012IMG_name'),'_OsDisk_1_35b7442f4e88485ab838c17dfc650053')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": []
+                },
+                "osProfile": {
+                    "computerName": "[variables('virtualMachines_PreLisWS2012IMG_name')]",
+                    "adminUsername": "wizmnt",
+                    "adminpassword": "zAq12wsxcde3",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true
+                    },
+                    "secrets": []
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_prelisws2012img816_name'))]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces', variables('networkInterfaces_prelisws2012img816_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/connections/PreLis002-VPN' から一般化されました。",
+            "type": "Microsoft.Network/connections",
+            "name": "[variables('connections_PreLis002_VPN_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "resourceGuid": "9e57d9eb-6286-47f7-b8ec-718da11a604f",
+                "virtualNetworkGateway1": {
+                    "id": "[resourceId('Microsoft.Network/virtualNetworkGateways',variables('virtualNetworkGateways_PreLis002_GW_name'))]"
+                },
+                "localNetworkGateway2": {
+                    "id": "[resourceId('Microsoft.Network/localNetworkGateways',variables('localNetworkGateways_PreLis002_LocalGW_name'))]"
+                },
+                "connectionType": "IPsec",
+                "routingWeight": 0,
+                "enableBgp": false,
+                "usePolicyBasedTrafficSelectors": false,
+                "ipsecPolicies": []
+            },
+      "dependsOn": [
+        "[concat('Microsoft.Network/virtualNetworkGateways/', variables('virtualNetworkGateways_PreLis002_GW_name'))]",
+        "[concat('Microsoft.Network/localNetworkGateways/', variables('localNetworkGateways_PreLis002_LocalGW_name'))]"
+      ]
+              },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/localNetworkGateways/PreLis002-LocalGW' から一般化されました。",
+            "type": "Microsoft.Network/localNetworkGateways",
+            "name": "[variables('localNetworkGateways_PreLis002_LocalGW_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "resourceGuid": "b6e2d40d-4f05-42c6-8157-aa96434dab38",
+                "localNetworkAddressSpace": {
+                    "addressPrefixes": [
+                        "192.168.30.0/24"
+                    ]
+                },
+                "gatewayIpAddress": "1.1.1.1"
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkInterfaces/PreLis002-vm02466' から一般化されました。",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_PreLis002_vm02466_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "5b8f2b0c-0979-4964-99cb-b3383435adae",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"96cd2669-0024-440b-b62d-14d646749b2c\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "172.23.1.5",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM02_PIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "g5sceldvqshezars5jo5bismda.lx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-52-81-11",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM02_nsg_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM02_PIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM02_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkInterfaces/PreLis002-vm03309' から一般化されました。",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_PreLis002_vm03309_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "56998597-e87e-4bea-b74e-554c6eac510f",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"cf7ebc0d-e15c-4859-bca6-ede264feb609\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "172.23.1.6",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM03_PIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "g5sceldvqshezars5jo5bismda.lx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-52-83-1B",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM03_nsg_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM03_PIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM03_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkInterfaces/preliswin10img181' から一般化されました。",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_preliswin10img181_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "d60140a0-3096-455c-8bc8-aeeb9e5583e7",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"a9fc158e-00e1-4854-8042-016fe6ee5b4b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "172.23.1.7",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLisWin10IMG_PIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "g5sceldvqshezars5jo5bismda.lx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-51-A4-3E",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWin10IMG_nsg_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLisWin10IMG_PIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWin10IMG_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkInterfaces/prelisws2012img816' から一般化されました。",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_prelisws2012img816_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "1aab3956-fb4b-4850-a5c2-b80fe5e041c1",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"630a2bc1-7679-470f-a439-ef2e52c8ec53\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "172.23.1.8",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLisWS2012IMG_PIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "g5sceldvqshezars5jo5bismda.lx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-50-FF-C0",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWS2012IMG_nsg_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLisWS2012IMG_PIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWS2012IMG_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM01-nsg' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_PreLis002_VM01_nsg_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "1494a026-f70a-47de-a419-9c76a13d28e9",
+                "securityRules": [
+                    {
+                        "name": "default-allow-rdp",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"e2f975cb-aca9-4697-b511-1f32b0e78e8b\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM02-nsg' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_PreLis002_VM02_nsg_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "cb4f4e37-c381-4e8b-8830-c5547d8fab52",
+                "securityRules": [
+                    {
+                        "name": "default-allow-rdp",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"fe2f0649-ae5a-4ef3-a676-322c65951a21\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM03-nsg' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_PreLis002_VM03_nsg_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "b71ffed1-5709-43fd-a4b5-a1e128802698",
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 300,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"deef5c8f-784f-40a8-9d47-617d435a330a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkInterfaces/PreLis002-vm01844' から一般化されました。",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[variables('networkInterfaces_PreLis002_vm01844_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "dae91f11-3912-41c2-b77c-7178e41257a9",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"eeb16555-31db-45b3-99a8-a42937937b80\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "172.23.1.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM01_PIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": [],
+                    "internalDomainNameSuffix": "g5sceldvqshezars5jo5bismda.lx.internal.cloudapp.net"
+                },
+                "macAddress": "00-0D-3A-51-2C-21",
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM01_nsg_name'))]"
+                },
+                "primary": true
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_VM01_PIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_PreLis002_VMsubnet_name'))]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM01_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/virtualNetworks/PreLis002-Vnet/subnets/PreLis002-VMsubnet' から一般化されました。",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "name": "[concat(variables('virtualNetworks_PreLis002_Vnet_name'), '/', variables('subnets_PreLis002_VMsubnet_name'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "172.23.1.0/24"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_PreLis002_Vnet_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/virtualNetworks/PreLis002-Vnet/subnets/GatewaySubnet' から一般化されました。",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "name": "[concat(variables('virtualNetworks_PreLis002_Vnet_name'), '/', variables('subnets_GatewaySubnet_name'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "172.23.254.0/24"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworks_PreLis002_Vnet_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLisWin10IMG-nsg' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_PreLisWin10IMG_nsg_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "9e8a22bc-399c-4159-a3c8-4a2a0a3e1890",
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 300,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"e179a645-58df-43c8-bb86-1c95319e4612\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLisWS2012IMG-nsg' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "name": "[variables('networkSecurityGroups_PreLisWS2012IMG_nsg_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "7ad53b26-3c45-47d4-9e37-6115317cd3e1",
+                "securityRules": [
+                    {
+                        "name": "RDP",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "protocol": "TCP",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "3389",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 300,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ],
+                "defaultSecurityRules": [
+                    {
+                        "name": "AllowVnetInBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowAzureLoadBalancerInBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow inbound traffic from azure load balancer",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "AzureLoadBalancer",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllInBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all inbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Inbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowVnetOutBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to all VMs in VNET",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "VirtualNetwork",
+                            "destinationAddressPrefix": "VirtualNetwork",
+                            "access": "Allow",
+                            "priority": 65000,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "AllowInternetOutBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Allow outbound traffic from all VMs to Internet",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "Internet",
+                            "access": "Allow",
+                            "priority": 65001,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    },
+                    {
+                        "name": "DenyAllOutBound",
+                        "etag": "W/\"b8947443-5362-411f-a0d7-b558740556e8\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "description": "Deny all outbound traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 65500,
+                            "direction": "Outbound",
+                            "sourcePortRanges": [],
+                            "destinationPortRanges": [],
+                            "sourceAddressPrefixes": [],
+                            "destinationAddressPrefixes": []
+                        }
+                    }
+                ]
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLis002-GWPIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLis002_GWPIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "f1745e01-6b9e-45eb-9f5b-7ca7c3b77b80",
+                "ipAddress": "40.115.138.94",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLis002-VM01-PIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLis002_VM01_PIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "4fd1643e-ce12-431d-b7da-8cd52e571cf8",
+                "ipAddress": "13.78.13.105",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLis002-VM02-PIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLis002_VM02_PIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "6a4424aa-4d65-43e6-b61b-d5584e9c0b2a",
+                "ipAddress": "13.78.29.166",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLis002-VM03-PIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLis002_VM03_PIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "865a90b2-74c5-451d-94ff-70af0e71e68f",
+                "ipAddress": "13.78.28.176",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLisWin10IMG-PIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLisWin10IMG_PIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "c05eda3b-8b52-48b5-9f55-3bf7769d0534",
+                "ipAddress": "13.78.33.137",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/publicIPAddresses/PreLisWS2012IMG-PIP' から一般化されました。",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[variables('publicIPAddresses_PreLisWS2012IMG_PIP_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "f5f36f49-3929-4b1d-a538-5d071c3780ee",
+                "ipAddress": "13.78.45.179",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/virtualNetworkGateways/PreLis002-GW' から一般化されました。",
+            "type": "Microsoft.Network/virtualNetworkGateways",
+            "name": "[variables('virtualNetworkGateways_PreLis002_GW_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "resourceGuid": "af08cd14-3e42-4507-8baf-effc6fac84e5",
+                "ipConfigurations": [
+                    {
+                        "name": "default",
+                        "etag": "W/\"50cc4e23-7c11-4f7c-a557-585ae20a03df\"",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_GWPIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_GatewaySubnet_name'))]"
+                            }
+                        }
+                    }
+                ],
+                "sku": {
+                    "name": "Basic",
+                    "tier": "Basic",
+                    "capacity": 2
+                },
+                "gatewayType": "Vpn",
+                "vpnType": "PolicyBased",
+                "enableBgp": false,
+                "activeActive": false,
+                "vpnClientConfiguration": {
+                    "vpnClientProtocols": [
+                        "SSTP"
+                    ],
+                    "vpnClientRootCertificates": [],
+                    "vpnClientRevokedCertificates": [],
+                    "vpnClientIpsecPolicies": []
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddresses_PreLis002_GWPIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_PreLis002_Vnet_name'), variables('subnets_GatewaySubnet_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/virtualNetworks/PreLis002-Vnet' から一般化されました。",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[variables('virtualNetworks_PreLis002_Vnet_name')]",
+            "apiVersion": "2018-02-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "2c22e437-8475-4c8e-8232-fa5df0a24c18",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "172.23.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "PreLis002-VMsubnet",
+                        "etag": "W/\"f0567b1f-db96-4226-9f8a-a79524d9655a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "172.23.1.0/24"
+                        }
+                    },
+                    {
+                        "name": "GatewaySubnet",
+                        "etag": "W/\"f0567b1f-db96-4226-9f8a-a79524d9655a\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "172.23.254.0/24"
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM01/extensions/IaaSAntimalware' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('virtualMachines_PreLis002_VM01_name'), '/', variables('extensions_IaaSAntimalware_name'))]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "AntimalwareEnabled": true,
+                    "RealtimeProtectionEnabled": "true",
+                    "ScheduledScanSettings": {
+                        "isEnabled": "false",
+                        "day": "7",
+                        "time": "120",
+                        "scanType": "Quick"
+                    },
+                    "Exclusions": {
+                        "Extensions": "",
+                        "Paths": "",
+                        "Processes": ""
+                    }
+                },
+                "publisher": "Microsoft.Azure.Security",
+                "type": "[variables('extensions_IaaSAntimalware_name')]",
+                "typeHandlerVersion": "1.3"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('virtualMachines_PreLis002_VM01_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM02/extensions/IaaSAntimalware' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('virtualMachines_PreLis002_VM02_name'), '/', variables('extensions_IaaSAntimalware_name_1'))]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "AntimalwareEnabled": true,
+                    "RealtimeProtectionEnabled": "true",
+                    "ScheduledScanSettings": {
+                        "isEnabled": "false",
+                        "day": "7",
+                        "time": "120",
+                        "scanType": "Quick"
+                    },
+                    "Exclusions": {
+                        "Extensions": "",
+                        "Paths": "",
+                        "Processes": ""
+                    }
+                },
+                "publisher": "Microsoft.Azure.Security",
+                "type": "[variables('extensions_IaaSAntimalware_name_1')]",
+                "typeHandlerVersion": "1.3"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('virtualMachines_PreLis002_VM02_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Compute/virtualMachines/PreLis002-VM03/extensions/IaaSAntimalware' から一般化されました。",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('virtualMachines_PreLis002_VM03_name'), '/', variables('extensions_IaaSAntimalware_name_2'))]",
+            "apiVersion": "2017-12-01",
+            "location": "japaneast",
+            "scale": null,
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "AntimalwareEnabled": true,
+                    "RealtimeProtectionEnabled": "true",
+                    "ScheduledScanSettings": {
+                        "isEnabled": "false",
+                        "day": "7",
+                        "time": "120",
+                        "scanType": "Quick"
+                    },
+                    "Exclusions": {
+                        "Extensions": "",
+                        "Paths": "",
+                        "Processes": ""
+                    }
+                },
+                "publisher": "Microsoft.Azure.Security",
+                "type": "[variables('extensions_IaaSAntimalware_name_2')]",
+                "typeHandlerVersion": "1.3"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/virtualMachines', variables('virtualMachines_PreLis002_VM03_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM01-nsg/securityRules/default-allow-rdp' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(variables('networkSecurityGroups_PreLis002_VM01_nsg_name'), '/', variables('securityRules_default_allow_rdp_name'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM01_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM02-nsg/securityRules/default-allow-rdp' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(variables('networkSecurityGroups_PreLis002_VM02_nsg_name'), '/', variables('securityRules_default_allow_rdp_name_1'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 1000,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM02_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLis002-VM03-nsg/securityRules/RDP' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(variables('networkSecurityGroups_PreLis002_VM03_nsg_name'), '/', variables('securityRules_RDP_name'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLis002_VM03_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLisWin10IMG-nsg/securityRules/RDP' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(variables('networkSecurityGroups_PreLisWin10IMG_nsg_name'), '/', variables('securityRules_RDP_name_1'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWin10IMG_nsg_name'))]"
+            ]
+        },
+        {
+            "comments": "リソース '/subscriptions/0289e08f-8100-4687-af28-9fcbe0e3bf75/resourceGroups/AandT-PreLis-RG/providers/Microsoft.Network/networkSecurityGroups/PreLisWS2012IMG-nsg/securityRules/RDP' から一般化されました。",
+            "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+            "name": "[concat(variables('networkSecurityGroups_PreLisWS2012IMG_nsg_name'), '/', variables('securityRules_RDP_name_2'))]",
+            "apiVersion": "2018-02-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "protocol": "TCP",
+                "sourcePortRange": "*",
+                "destinationPortRange": "3389",
+                "sourceAddressPrefix": "*",
+                "destinationAddressPrefix": "*",
+                "access": "Allow",
+                "priority": 300,
+                "direction": "Inbound",
+                "sourcePortRanges": [],
+                "destinationPortRanges": [],
+                "sourceAddressPrefixes": [],
+                "destinationAddressPrefixes": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_PreLisWS2012IMG_nsg_name'))]"
+            ]
+        }
+    ]
+}
